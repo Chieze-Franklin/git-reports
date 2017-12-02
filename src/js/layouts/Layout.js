@@ -6,7 +6,7 @@ import MainPanel from './MainPanel';
 class Layout extends React.Component {
     render() {
         return (
-            <div class="wrapper">
+            <div className="wrapper">
                 <Sidebar />
                 <MainPanel />
             </div>
