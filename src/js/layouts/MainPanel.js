@@ -8,9 +8,9 @@ class MainPanel extends React.Component {
     render() {
         return (
             <div className="main-panel">
-                <Header />
-                <Content />
-                <Footer />
+                {React.cloneElement(<Header />, this.props)}
+                {React.cloneElement(<Content />, this.props)}
+                {React.cloneElement(<Footer />, this.props)}
             </div>
         )
     }

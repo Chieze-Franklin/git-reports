@@ -7,8 +7,8 @@ class Layout extends React.Component {
     render() {
         return (
             <div className="wrapper">
-                <Sidebar />
-                <MainPanel />
+                {React.cloneElement(<Sidebar />, this.props)}
+                {React.cloneElement(<MainPanel />, this.props)}
             </div>
         )
     }

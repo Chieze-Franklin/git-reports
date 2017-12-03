@@ -1,7 +1,66 @@
 import React from 'react';
+import request from 'request-promise-native';
 
 class Header extends React.Component {
+    constructor(props){
+        super(props);
+
+        this.state = {
+        };
+
+        this.submitAccount = this.submitAccount.bind(this);
+    }
+
+    submitAccount(e) {
+        e.preventDefault();
+
+        const value = this.refs.github_account.value;
+
+        this.props.getGithubAccountLoadingAction(value);
+
+        request({
+            url: `https://api.github.com/orgs/${value}/repos?type=all`,
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            //resolveWithFullResponse: true
+        })
+        .then((response) => {
+            const repos = JSON.parse(response);
+            this.props.getGithubAccountLoadedAction({name: value, type: 'org', repos});
+        })
+        .catch((err) => {
+            //if you can't find an organization with that name, search for users with that name
+            request({
+                url: `https://api.github.com/users/${value}/repos?type=all`,
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                //resolveWithFullResponse: true
+            })
+            .then((response) => {
+                const repos = JSON.parse(response);
+                this.props.getGithubAccountLoadedAction({name: value, type: 'user', repos});
+            })
+            .catch((err) => {
+                this.props.getGithubAccountLoadingFailedAction(err);
+            })
+        })
+    }
+
     render() {
+        console.log(this.props);
+        let selectElement;
+        if (this.props.github.repos) {
+            const repoOptions = this.props.github.repos.map((repo) => (<option key={repo.full_name}>{repo.full_name}</option>));
+            selectElement = (<select className="form-control">
+                    <option></option>
+                    {repoOptions}
+                </select>);
+        }
+
         return (
             <nav className="navbar navbar-transparent navbar-absolute">
                 <div className="container-fluid">
@@ -55,17 +114,13 @@ class Header extends React.Component {
                         </ul>
                         <form className="navbar-form navbar-right" role="search">
                             <div className="form-group  is-empty">
-                                <input type="text" className="form-control" placeholder="Search" />
+                                {selectElement}
                                 <span className="material-input"></span>
                             </div>
-                            <button type="submit" className="btn btn-white btn-round btn-just-icon">
-                                <i className="material-icons">search</i>
-                                <div className="ripple-container"></div>
-                            </button>
                         </form>
-                        <form className="navbar-form navbar-right" role="search">
+                        <form className="navbar-form navbar-right" role="search" onSubmit={this.submitAccount}>
                             <div className="form-group  is-empty">
-                                <input type="text" className="form-control" placeholder="Search2" />
+                                <input type="text" className="form-control" placeholder="Github Account" ref="github_account" />
                                 <span className="material-input"></span>
                             </div>
                             <button type="submit" className="btn btn-white btn-round btn-just-icon">

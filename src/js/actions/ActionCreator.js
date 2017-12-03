@@ -1,20 +1,20 @@
 import ActionTypes from './ActionTypes';
 
-export const getGithubAccountLoadedAction: (name) => {
+export function getGithubAccountLoadedAction(account) {
     return {
         type: ActionTypes.GITHUB_ACCOUNT_LOADED,
-        payload: name
+        payload: account
     };
 }
 
-export const getGithubAccountLoadingAction: (name) => {
+export function getGithubAccountLoadingAction(name) {
     return {
         type: ActionTypes.GITHUB_ACCOUNT_LOADING,
         payload: name
     };
 }
 
-export const getGithubAccountLoadingFailedAction: (error) => {
+export function getGithubAccountLoadingFailedAction(error) {
     return {
         type: ActionTypes.GITHUB_ACCOUNT_LOADING_FAILED,
         payload: error

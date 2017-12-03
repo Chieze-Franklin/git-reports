@@ -1,19 +1,22 @@
 import ActionTypes from '../actions/ActionTypes';
 
-export default (state = {}, action) => {
+export default (state = {name:null, type: null, repo:null, repos:null}, action) => {
+    let newState = {...state};
     switch(action.type) {
         case ActionTypes.GITHUB_ACCOUNT_LOADED: {
-            state = {...state, name: action.payload};
+            newState = {...action.payload};
             break;
         }
         case ActionTypes.GITHUB_ACCOUNT_LOADING: {
-            state = {...state, name: action.payload};
+            newState.name = action.payload;
             break;
         }
         case ActionTypes.GITHUB_ACCOUNT_LOADING_FAILED: {
-            state = {...state, error: action.payload};
+            newState = {...action.payload};
             break;
         }
+        default:
+            newState = state;
     }
-    return state;
+    return newState;
 }
