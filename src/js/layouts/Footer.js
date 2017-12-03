@@ -8,7 +8,7 @@ class Footer extends React.Component {
                     <nav className="pull-left">
                         <ul>
                             <li>
-                                <a href="#">
+                                <a href="https://github.com/chieze-franklin/git-reports">
                                     About this Project
                                 </a>
                             </li>

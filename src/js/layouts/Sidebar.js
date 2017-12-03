@@ -1,13 +1,24 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
+const disabledLink = {
+    pointerEvents: 'none',
+    cursor: 'not-allowed'
+};
 
 class Sidebar extends React.Component {
     constructor(props) {
         super(props);
+        
+        this.makeActive = this.makeActive.bind(this);
+    }
 
-        this.state = {
-            owner: null,
-            repo: null
-        };
+    makeActive(ref) {
+        const allRefs = ["pr", "ab"];
+        allRefs.forEach(r => {
+            this.refs[r].className = "";
+        });
+        this.refs[ref].className = "active";
     }
 
     render() {
@@ -28,53 +39,21 @@ class Sidebar extends React.Component {
                 </div>
                 
                 <div className="sidebar-wrapper">
-                    {this.state.owner && this.state.repo ? 
-                    (<ul className="nav">
-                    <li className="active">
-                        <a href="dashboard.html">
-                            <i className="material-icons">person</i>
-                            <p>Owner/Organization</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./user.html">
+                    <ul className="nav">
+                        <li ref="pr">
+                            <Link to="/pr" onClick={() => this.makeActive('pr')} style={this.props.github.repo? {}: disabledLink}>
                             <i className="material-icons">bubble_chart</i>
-                            <p>User Profile</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./table.html">
+                                <p>PR Report</p>
+                            </Link>
+                        </li>
+                        <li ref="ab">
+                            <Link to="/ab" onClick={() => this.makeActive('ab')} style={this.props.github.repo? {}: disabledLink}>
                             <i className="material-icons">content_paste</i>
-                            <p>Table List</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./typography.html">
-                            <i className="material-icons">library_books</i>
-                            <p>Typography</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./icons.html">
-                            <i className="material-icons">bubble_chart</i>
-                            <p>Icons</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./maps.html">
-                            <i className="material-icons">location_on</i>
-                            <p>Maps</p>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="./notifications.html">
-                            <i className="material-icons text-gray">notifications</i>
-                            <p>Notifications</p>
-                        </a>
-                    </li>
-                    </ul>) :
-                    (<div></div>)}
-            </div>
+                                <p>AB Tests</p>
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
             </div>
         )
     }

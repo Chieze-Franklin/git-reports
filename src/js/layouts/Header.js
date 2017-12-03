@@ -1,5 +1,8 @@
+import _ from 'lodash';
 import React from 'react';
 import request from 'request-promise-native';
+
+import GithubAccountTypes from '../constants/GithubAccountTypes';
 
 class Header extends React.Component {
     constructor(props){
@@ -9,17 +12,19 @@ class Header extends React.Component {
         };
 
         this.submitAccount = this.submitAccount.bind(this);
+        this.submitRepo = this.submitRepo.bind(this);
     }
 
     submitAccount(e) {
         e.preventDefault();
 
-        const value = this.refs.github_account.value;
+        const accountName = this.refs.github_account.value;
+        if (!accountName || _.trim(accountName) === "") return;
 
-        this.props.getGithubAccountLoadingAction(value);
+        this.props.githubAccountLoading(accountName);
 
         request({
-            url: `https://api.github.com/orgs/${value}/repos?type=all`,
+            url: `https://api.github.com/orgs/${accountName}/repos`,
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -28,12 +33,12 @@ class Header extends React.Component {
         })
         .then((response) => {
             const repos = JSON.parse(response);
-            this.props.getGithubAccountLoadedAction({name: value, type: 'org', repos});
+            this.props.githubAccountLoaded({name: accountName, type: GithubAccountTypes.ORG, repo: null, repos});
         })
         .catch((err) => {
             //if you can't find an organization with that name, search for users with that name
             request({
-                url: `https://api.github.com/users/${value}/repos?type=all`,
+                url: `https://api.github.com/users/${accountName}/repos`,
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json'
@@ -42,20 +47,31 @@ class Header extends React.Component {
             })
             .then((response) => {
                 const repos = JSON.parse(response);
-                this.props.getGithubAccountLoadedAction({name: value, type: 'user', repos});
+                this.props.githubAccountLoaded({name: accountName, type: GithubAccountTypes.USER, repo: null, repos});
             })
             .catch((err) => {
-                this.props.getGithubAccountLoadingFailedAction(err);
+                this.props.githubAccountLoadingFailed(err);
             })
         })
     }
 
+    submitRepo(e) {
+        e.preventDefault();
+
+        const sel = this.refs.github_repos;
+        const repoName = sel.options[sel.selectedIndex].value;
+
+        if (!repoName || _.trim(repoName) === "") return;
+
+        this.props.githubRepoSelected({...this.props.github, repo: repoName});
+    }
+
     render() {
-        console.log(this.props);
         let selectElement;
         if (this.props.github.repos) {
-            const repoOptions = this.props.github.repos.map((repo) => (<option key={repo.full_name}>{repo.full_name}</option>));
-            selectElement = (<select className="form-control">
+            const repoOptions = this.props.github.repos.map((repo) => (
+                <option key={repo.full_name} value={repo.full_name}>{repo.full_name}</option>));
+            selectElement = (<select className="form-control" onChange={this.submitRepo} ref="github_repos">
                     <option></option>
                     {repoOptions}
                 </select>);
@@ -74,44 +90,6 @@ class Header extends React.Component {
                         <a className="navbar-brand" href="#"> Material Dashboard </a>
                     </div>
                     <div className="collapse navbar-collapse">
-                        <ul className="nav navbar-nav navbar-right">
-                            <li>
-                                <a href="#pablo" className="dropdown-toggle" data-toggle="dropdown">
-                                    <i className="material-icons">dashboard</i>
-                                    <p className="hidden-lg hidden-md">Dashboard</p>
-                                </a>
-                            </li>
-                            <li className="dropdown">
-                                <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-                                    <i className="material-icons">notifications</i>
-                                    <span className="notification">5</span>
-                                    <p className="hidden-lg hidden-md">Notifications</p>
-                                </a>
-                                <ul className="dropdown-menu">
-                                    <li>
-                                        <a href="#">Mike John responded to your email</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">You have 5 new tasks</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">You're now friend with Andrew</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another Notification</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Another One</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li>
-                                <a href="#pablo" className="dropdown-toggle" data-toggle="dropdown">
-                                    <i className="material-icons">person</i>
-                                    <p className="hidden-lg hidden-md">Profile</p>
-                                </a>
-                            </li>
-                        </ul>
                         <form className="navbar-form navbar-right" role="search">
                             <div className="form-group  is-empty">
                                 {selectElement}

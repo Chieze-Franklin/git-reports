@@ -9,8 +9,8 @@ class Content extends React.Component {
         return (
             <div className="content">
                 <Switch>
-                    <Route exact path="/" component={Home} />
-                    <Route path="/pr" component={PrReport} />
+                    <Route exact={true} path='/' render={(props) => (React.cloneElement(<Home />, {...props, ...this.props}))}/>
+                    <Route exact={true} path='/pr' render={(props) => (React.cloneElement(<PrReport />, {...props, ...this.props}))}/>
                 </Switch>
             </div>
         )

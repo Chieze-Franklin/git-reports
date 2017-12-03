@@ -15,6 +15,10 @@ export default (state = {name:null, type: null, repo:null, repos:null}, action) 
             newState = {...action.payload};
             break;
         }
+        case ActionTypes.GITHUB_REPO_SELECTED: {
+            newState = {...action.payload};
+            break;
+        }
         default:
             newState = state;
     }
