@@ -1,10 +1,6 @@
-import {combineReducers, createStore} from 'redux';
+import {createStore} from 'redux';
 
-import GithubReducer from './reducers/GithubReducer';
-
-const reducers = combineReducers({
-    github: GithubReducer
-});
+import reducers from './js/reducers/index';
 
 const store = createStore(reducers, {});
 
