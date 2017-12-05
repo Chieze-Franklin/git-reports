@@ -11,11 +11,11 @@ class Header extends React.Component {
         this.state = {
         };
 
-        this.submitAccount = this.submitAccount.bind(this);
-        this.submitRepo = this.submitRepo.bind(this);
+        this.findAccount = this.findAccount.bind(this);
+        this.selectRepo = this.selectRepo.bind(this);
     }
 
-    submitAccount(e) {
+    findAccount(e) {
         e.preventDefault();
 
         const accountName = this.refs.github_account.value;
@@ -55,7 +55,7 @@ class Header extends React.Component {
         })
     }
 
-    submitRepo(e) {
+    selectRepo(e) {
         e.preventDefault();
 
         const sel = this.refs.github_repos;
@@ -71,7 +71,7 @@ class Header extends React.Component {
         if (this.props.github.repos) {
             const repoOptions = this.props.github.repos.map((repo) => (
                 <option key={repo.full_name} value={repo.full_name}>{repo.full_name}</option>));
-            selectElement = (<select className="form-control" onChange={this.submitRepo} ref="github_repos">
+            selectElement = (<select className="form-control" onChange={this.selectRepo} ref="github_repos">
                     <option></option>
                     {repoOptions}
                 </select>);
@@ -96,7 +96,7 @@ class Header extends React.Component {
                                 <span className="material-input"></span>
                             </div>
                         </form>
-                        <form className="navbar-form navbar-right" role="search" onSubmit={this.submitAccount}>
+                        <form className="navbar-form navbar-right" role="search" onSubmit={this.findAccount}>
                             <div className="form-group  is-empty">
                                 <input type="text" className="form-control" placeholder="Github Account" ref="github_account" />
                                 <span className="material-input"></span>

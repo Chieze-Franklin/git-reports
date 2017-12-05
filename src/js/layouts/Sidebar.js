@@ -33,9 +33,9 @@ class Sidebar extends React.Component {
                  */}
 
                 <div className="logo">
-                    <a href="http://www.creative-tim.com" className="simple-text">
+                    <Link to="/" className="simple-text">
                         Git Reports
-                    </a>
+                    </Link>
                 </div>
                 
                 <div className="sidebar-wrapper">
