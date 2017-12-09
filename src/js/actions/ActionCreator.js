@@ -27,3 +27,24 @@ export function githubRepoSelected(account) {
         payload: account
     };
 }
+
+export function PrsLoaded(accountName, repoName, prs) {
+    return {
+        type: ActionTypes.PRS_LOADED,
+        payload: {name: accountName, repo: repoName, prs: prs}
+    };
+}
+
+export function PrsLoading(accountName, repoName) {
+    return {
+        type: ActionTypes.PRS_LOADING,
+        payload: {name: accountName, repo: repoName}
+    };
+}
+
+export function PrsLoadingFailed(error) {
+    return {
+        type: ActionTypes.PRS_LOADING_FAILED,
+        payload: error
+    };
+}

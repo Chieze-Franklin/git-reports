@@ -7,7 +7,8 @@ import Layout from './Layout';
 
 function mapStateToProps(state) {
     return {
-        github: state.github
+        github: state.github,
+        prs: state.prs
     }
 }
 
