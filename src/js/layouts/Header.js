@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import React from 'react';
 import request from 'request-promise-native';
+import toastr from 'toastr';
 
 import GithubAccountTypes from '../constants/GithubAccountTypes';
 
@@ -22,6 +23,7 @@ class Header extends React.Component {
         if (!accountName || _.trim(accountName) === "") return;
 
         this.props.githubAccountLoading(accountName);
+        toastr.info('Loading Github account...')
 
         request({
             url: `https://api.github.com/orgs/${accountName}/repos`,
@@ -34,6 +36,7 @@ class Header extends React.Component {
         .then((response) => {
             const repos = JSON.parse(response);
             this.props.githubAccountLoaded({name: accountName, type: GithubAccountTypes.ORG, repo: null, repos});
+            toastr.success('Github account loaded.');
         })
         .catch((err) => {
             //if you can't find an organization with that name, search for users with that name
@@ -51,6 +54,7 @@ class Header extends React.Component {
             })
             .catch((err) => {
                 this.props.githubAccountLoadingFailed(err);
+                toastr.error('Failed to load Github account.\n' + err);
             })
         })
     }
