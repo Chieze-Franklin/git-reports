@@ -11,6 +11,7 @@ export default (state = {name:null, repo:null, prs:null}, action) => {
             newState = {...action.payload};
             break;
         }
+        default: ;
     }
     return newState;
 }

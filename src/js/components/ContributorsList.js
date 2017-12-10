@@ -31,6 +31,8 @@ class ContributorsList extends React.Component {
                             </tr>
                         );
                 }
+
+                return null;
             });
         }
 

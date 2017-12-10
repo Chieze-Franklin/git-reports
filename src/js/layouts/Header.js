@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import React from 'react';
+import {Link} from 'react-router-dom';
 import request from 'request-promise-native';
 import toastr from 'toastr';
 
@@ -91,7 +92,7 @@ class Header extends React.Component {
                             <span className="icon-bar"></span>
                             <span className="icon-bar"></span>
                         </button>
-                        <a className="navbar-brand" href="#"> Material Dashboard </a>
+                        <Link to="/" className="navbar-brand">{this.props.github.repo}</Link>
                     </div>
                     <div className="collapse navbar-collapse">
                         <form className="navbar-form navbar-right" role="search">
