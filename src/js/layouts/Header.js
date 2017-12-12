@@ -6,6 +6,20 @@ import toastr from 'react-redux-toastr';
 
 import GithubAccountTypes from '../constants/GithubAccountTypes';
 
+const toastrOptions = {
+    timeOut: 3000, // by setting to 0 it will prevent the auto close
+    //icon: (<myCustomIconOrAvatar />), // You can add any component you want but note the the with and height are 70px ;)
+    onShowComplete: () => console.log('SHOW: animation is done'),
+    onHideComplete: () => console.log('HIDE: animation is done'),
+    onCloseButtonClick: () => console.log('Close button was clicked'),
+    //showCloseButton: false, // true by default
+    component: ( // this option will give you a func 'remove' as props
+      <div>
+        <span>Hello, World!</span>
+      </div>
+    )
+  }
+
 class Header extends React.Component {
     constructor(props){
         super(props);
@@ -24,7 +38,7 @@ class Header extends React.Component {
         if (!accountName || _.trim(accountName) === "") return;
 
         this.props.githubAccountLoading(accountName);
-        toastr.info('Loading Github account...')
+        toastr.success('Loading Github account...', "toastrOptions")
 
         request({
             url: `https://api.github.com/orgs/${accountName}/repos`,
