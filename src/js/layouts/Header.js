@@ -2,22 +2,14 @@ import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import request from 'request-promise-native';
-import toastr from 'react-redux-toastr';
+import toastr, {actions as toastrActions} from 'react-redux-toastr';
 
 import GithubAccountTypes from '../constants/GithubAccountTypes';
 
-const toastrOptions = {
-    timeOut: 3000, // by setting to 0 it will prevent the auto close
-    //icon: (<myCustomIconOrAvatar />), // You can add any component you want but note the the with and height are 70px ;)
-    onShowComplete: () => console.log('SHOW: animation is done'),
-    onHideComplete: () => console.log('HIDE: animation is done'),
-    onCloseButtonClick: () => console.log('Close button was clicked'),
-    //showCloseButton: false, // true by default
-    component: ( // this option will give you a func 'remove' as props
-      <div>
-        <span>Hello, World!</span>
-      </div>
-    )
+const toastrType = 'warning';
+  const toastrOptions = {
+    icon: toastrType,
+    status: toastrType
   }
 
 class Header extends React.Component {
@@ -38,7 +30,8 @@ class Header extends React.Component {
         if (!accountName || _.trim(accountName) === "") return;
 
         this.props.githubAccountLoading(accountName);
-        toastr.success('Loading Github account...', "toastrOptions")
+        toastr.light('The title', 'The message', toastrOptions)
+        //toastr.success('Loading Github account...', "toastrOptions")
 
         request({
             url: `https://api.github.com/orgs/${accountName}/repos`,
