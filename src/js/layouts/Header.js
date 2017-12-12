@@ -2,7 +2,7 @@ import _ from 'lodash';
 import React from 'react';
 import {Link} from 'react-router-dom';
 import request from 'request-promise-native';
-import toastr from 'toastr';
+import toastr from 'react-redux-toastr';
 
 import GithubAccountTypes from '../constants/GithubAccountTypes';
 
